@@ -111,3 +111,92 @@ app.listen(PORT, () => {
 ## CRUD Operation using Node.js and MongoDB
 
 * Make 3 Directories - controllers, models, routes 
+
+### Making a Model 
+
+```javascript 
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
+const employeeSchema = new Schema(
+  {
+    name: {
+      type: String,
+    },
+    designation: {
+      type: String,
+    },
+    email: {
+      type: String,
+    },
+    phone: {
+      type: String,
+    },
+    age: {
+      type: Number,
+    },
+  },
+  { timestamps: true }
+);
+
+const Employee = mongoose.model("Employee", employeeSchema);
+module.exports = Employee;
+```
+* [Mongoose Schema types can be found in the documentation](https://mongoosejs.com/docs/schematypes.html)
+* ```timestamps:true``` automatically manages created and updated fields. 
+* ```module.exports = Employee;``` exports the model
+
+### Controller
+
+```javascript
+const Employee = require("../models/Employee");
+```
+* Model is imported 
+
+**List of All Employees**
+```javascript 
+//Show List of Employees
+
+const index = (req, res, next) => {
+  Employee.find()
+    .then((response) => {
+      res.json({
+        response,
+      });
+    })
+    .catch((error) => {
+      res.json({
+        message: "An error occured!",
+      });
+    });
+};
+
+```
+Note 
+
+* ```req``` will take the request in incoming bodies, ```res``` will provide the response and ```next``` will go to next execution if everything okay
+* ```Employee.find()``` is a mongoose query returns all employees from database 
+*  If query is okay it will return the response if not it will return the message error occured 
+
+**Single Employee by ID**
+
+```javascript 
+// Single Employee
+
+const show = (req, res, next) => {
+  let employeeID = req.body.employeeID;
+  Employee.findById(employeeID)
+    .then((response) => {
+      res.json({
+        response,
+      });
+    })
+    .catch((error) => {
+      res.json({
+        message: "Error!",
+      });
+    });
+};
+```
+
+
