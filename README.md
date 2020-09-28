@@ -305,3 +305,39 @@ router.post("/delete", EmployeeController.destroy);
 
 module.exports = router;
 ```
+### User Login Registration 
+
+**Packages for Login and Registration process**
+
+* ```npm install bcryptjs jsonwebtoken```
+
+**The code**
+
+* Create - ```AuthController.js``` Controller, ```User.js``` Model, ```auth.js``` Route
+* Create a new user schema in Models
+
+```javascript
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
+const userSchema = new Schema(
+  {
+    name: {
+      type: String,
+    },
+    email: {
+      type: String,
+    },
+    phone: {
+      type: String,
+    },
+    password: {
+      type: String,
+    },
+  },
+  { timestamps: true }
+);
+
+const User = mongoose.model("User", userSchema);
+module.exports = User;
+```
