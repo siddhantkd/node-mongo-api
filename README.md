@@ -198,5 +198,110 @@ const show = (req, res, next) => {
     });
 };
 ```
+**Store Employee Details**
 
+```javascript 
+//Add a Employee to the database
 
+const store = (req, res, next) => {
+  let employee = new Employee({
+    name: req.body.name,
+    designation: req.body.designation,
+    email: req.body.email,
+    phone: req.body.phone,
+    age: req.body.age,
+  });
+  employee
+    .save()
+    .then((response) => {
+      res.json({
+        message: "Employee Added Bruh",
+      });
+    })
+    .catch((error) => {
+      res.json({
+        message: "errrrrrr",
+      });
+    });
+};
+}
+```
+**Update Employee**
+
+```javascript
+//Update and employee
+
+const update = (req, res, next) => {
+  let employeeID = req.body.employeeID;
+  let updatedData = {
+    name: req.body.name,
+    designation: req.body.designation,
+    email: req.body.email,
+    phone: req.body.phone,
+    age: req.body.age,
+  };
+  Employee.findByIdAndUpdate(employeeID, { $set: updatedData })
+    .then(() => {
+      res.json({
+        message: "Employee Updated",
+      });
+    })
+    .catch((error) => {
+      res.json({
+        message: "An error occured",
+      });
+    });
+};
+```
+**Delete Employee**
+
+```javascript
+// Delete employee
+
+const destroy = (req, res, next) => {
+  let employeeID = req.body.employeeID;
+  Employee.findByIdAndRemove(employeeID)
+    .then(() => {
+      res.json({
+        message: "Employee deleted!",
+      });
+    })
+    .catch((error) => {
+      res.json({
+        message: "An error occured",
+      });
+    });
+};
+
+```
+
+**Export**
+
+```javascript 
+module.exports = {
+  index,
+  show,
+  store,
+  update,
+  destroy,
+};
+
+```
+
+### Routes
+
+```javascript 
+const express = require("express");
+const router = express.Router();
+
+const EmployeeController = require("../controllers/EmployeeController");
+const Employee = require("../models/Employee");
+
+router.get("/", EmployeeController.index);
+router.post("/show", EmployeeController.show);
+router.post("/store", EmployeeController.store);
+router.post("/update", EmployeeController.update);
+router.post("/delete", EmployeeController.destroy);
+
+module.exports = router;
+```
